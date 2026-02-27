@@ -55,7 +55,7 @@ cvalign-lens/
 ### 1. Clone or download the project
 
 ```bash
-cd cvalign-lens
+cd resumealign-lens
 ```
 
 ### 2. Create and activate a virtual environment
@@ -76,7 +76,7 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Set your Anthropic API key
+### 4. Set your API key (you can use any API -KEY)
 
 ```bash
 # macOS / Linux
@@ -103,8 +103,8 @@ The app will be available at: **http://localhost:5000**
 
 | Environment Variable | Default | Description |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Required | Your Anthropic API key |
-| `ANTHROPIC_MODEL` | `claude-3-5-sonnet-20241022` | Model to use for analysis |
+| `GROQ_API_KEY` | Required | Your Groq API key |
+| `GROQ_MODEL` | Model to use for analysis |
 | `PORT` | `5000` | Port the Flask server listens on |
 | `FLASK_DEBUG` | `false` | Enable Flask debug mode |
 
@@ -122,7 +122,7 @@ gunicorn app:app --bind 0.0.0.0:8000 --workers 2 --timeout 120
 
 - Set `FLASK_DEBUG=false`
 - Use a reverse proxy (nginx) in front of gunicorn
-- Store your `ANTHROPIC_API_KEY` in a secrets manager or `.env` file (never commit it)
+- Store your `GROQ_API_KEY` in a secrets manager or `.env` file (never commit it)
 - Consider rate limiting the `/api/analyze` endpoint
 
 ---
@@ -162,7 +162,7 @@ All prompts are centralized in `prompts/prompt_templates.py`. No prompt text app
 | Layer | Technology |
 |---|---|
 | Backend | Python 3.10+, Flask 3.0 |
-| AI | Anthropic Claude (claude-3-5-sonnet) |
+| AI | GROQ |
 | PDF Parsing | pdfplumber |
 | DOCX Parsing | python-docx |
 | Frontend | Vanilla HTML / CSS / JavaScript |
@@ -190,4 +190,5 @@ All prompts are centralized in `prompts/prompt_templates.py`. No prompt text app
 
 ## License
 
-MIT — free to use, modify, and deploy.
+ free to use, modify, and deploy.
+ If you like the work, please leave a STAR.
