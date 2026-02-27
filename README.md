@@ -1,0 +1,193 @@
+# CVAlign Lens
+
+**Resume Intelligence Engine** — An AI-powered diagnostic tool that analyzes your resume against a job description and produces precise, explainable feedback. Not a resume builder. An analytical engine.
+
+---
+
+## What It Does
+
+CVAlign Lens performs a multi-stage analysis pipeline:
+
+1. **Job Description Parsing** — Extracts role requirements, must-have skills, ATS keywords, and seniority signals
+2. **Resume Intelligence Extraction** — Identifies skills, experience, achievements, and structural gaps
+3. **Semantic Analysis** — Compares both using LLM reasoning (not naive string matching)
+4. **Scoring** — Generates a 0–100 alignment score with dimensional breakdown
+5. **Explainable Recommendations** — Every suggestion includes a specific reason grounded in the job description
+
+---
+
+## Architecture
+
+```
+cvalign-lens/
+├── app.py                      # Flask entry point — routes & request handling
+├── services/
+│   ├── jd_parser.py            # Extracts structured intelligence from job descriptions
+│   ├── resume_parser.py        # Extracts structured candidate data from resumes
+│   ├── analyzer.py             # Core semantic comparison engine
+│   └── scorer.py               # Alignment scoring with dimensional breakdown
+├── prompts/
+│   └── prompt_templates.py     # All LLM prompts (centralized, never inline)
+├── utils/
+│   ├── llm_client.py           # Anthropic API wrapper with JSON extraction
+│   ├── file_handlers.py        # Resume file upload & text extraction (PDF/DOCX/TXT)
+│   └── text_processing.py      # Text cleaning & normalization utilities
+├── templates/
+│   └── index.html              # Single-page application template
+├── static/
+│   ├── styles.css              # Custom premium dark UI (no Bootstrap)
+│   └── app.js                  # Frontend interactions & results rendering
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Prerequisites
+
+- Python 3.10+
+- An [Anthropic API key](https://console.anthropic.com/)
+
+---
+
+## Setup & Installation
+
+### 1. Clone or download the project
+
+```bash
+cd cvalign-lens
+```
+
+### 2. Create and activate a virtual environment
+
+```bash
+python -m venv venv
+
+# macOS / Linux
+source venv/bin/activate
+
+# Windows
+venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Set your Anthropic API key
+
+```bash
+# macOS / Linux
+export ANTHROPIC_API_KEY="sk-ant-your-key-here"
+
+# Windows (Command Prompt)
+set ANTHROPIC_API_KEY=sk-ant-your-key-here
+
+# Windows (PowerShell)
+$env:ANTHROPIC_API_KEY="sk-ant-your-key-here"
+```
+
+### 5. Run the application
+
+```bash
+python app.py
+```
+
+The app will be available at: **http://localhost:5000**
+
+---
+
+## Configuration
+
+| Environment Variable | Default | Description |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Required | Your Anthropic API key |
+| `ANTHROPIC_MODEL` | `claude-3-5-sonnet-20241022` | Model to use for analysis |
+| `PORT` | `5000` | Port the Flask server listens on |
+| `FLASK_DEBUG` | `false` | Enable Flask debug mode |
+
+---
+
+## Production Deployment
+
+### Using Gunicorn (recommended)
+
+```bash
+gunicorn app:app --bind 0.0.0.0:8000 --workers 2 --timeout 120
+```
+
+### Environment notes for production
+
+- Set `FLASK_DEBUG=false`
+- Use a reverse proxy (nginx) in front of gunicorn
+- Store your `ANTHROPIC_API_KEY` in a secrets manager or `.env` file (never commit it)
+- Consider rate limiting the `/api/analyze` endpoint
+
+---
+
+## How the Analysis Works
+
+### Pipeline
+
+```
+User Input (JD + Resume)
+        ↓
+   JD Parser (jd_parser.py)
+   Extracts: role title, seniority, skills, requirements, ATS keywords
+        ↓
+   Resume Parser (resume_parser.py)
+   Extracts: skills, experience, achievements, sections, keywords
+        ↓
+   Analyzer (analyzer.py)
+   Produces: strengths, weaknesses, skill gaps, missing keywords,
+             section improvements, bullet optimization patterns
+        ↓
+   Scorer (scorer.py)
+   Produces: overall score, 5 dimensional scores,
+             hiring recommendation, top 3 actions
+        ↓
+   JSON Response → Frontend renders results
+```
+
+### Prompt Design
+
+All prompts are centralized in `prompts/prompt_templates.py`. No prompt text appears inside routes, services, or utilities. The system prompt defines the analytical persona; task prompts define the specific extraction or analysis task.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Python 3.10+, Flask 3.0 |
+| AI | Anthropic Claude (claude-3-5-sonnet) |
+| PDF Parsing | pdfplumber |
+| DOCX Parsing | python-docx |
+| Frontend | Vanilla HTML / CSS / JavaScript |
+| Production Server | Gunicorn |
+
+---
+
+## Design Principles
+
+- **No pseudo-code** — every function is fully implemented
+- **Separation of concerns** — parsing, analysis, and scoring are independent services
+- **Centralized prompts** — all LLM prompts in one place, versioned together
+- **Defensive error handling** — every external call is wrapped with informative error messages
+- **Explainability first** — every AI suggestion includes explicit reasoning
+
+---
+
+## Limitations
+
+- Analysis quality depends on resume and JD completeness — vague inputs produce vague results
+- Scanned/image-based PDFs cannot be parsed; plain text paste is the fallback
+- Each analysis costs approximately $0.01–0.04 in API credits depending on input length
+
+---
+
+## License
+
+MIT — free to use, modify, and deploy.

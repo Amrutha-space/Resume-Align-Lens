@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ResumeAlign Lens — Not The Boring One's </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-mark">⬡</span>
+        <span class="logo-text">Resume Align <em>Lens</em></span>
+      </div>
+      <div class="header-tag">Not The Boring One's</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-label">Your Life Analysis is Loading ... </div>
+    <h1 class="hero-headline">
+      Understand exactly where<br/>
+      <em>your RESUME falls short</em>
+    </h1>
+    <p class="hero-sub">
+      Not a resume builder. An analytical engine — identifying real gaps, real strengths,
+      and precise improvement sections for your target role.
+    </p>
+  </section>
+
+  <!-- Main Form -->
+  <main class="main-container">
+    <form id="analyzeForm" novalidate>
+
+      <!-- Two-column inputs -->
+      <div class="input-grid">
+
+        <!-- Job Description -->
+        <div class="input-panel">
+          <div class="panel-header">
+            <span class="panel-number">01</span>
+            <div>
+              <div class="panel-title">Job Description</div>
+              <div class="panel-subtitle">Paste the full job description here</div>
+            </div>
+          </div>
+          <textarea
+            id="jobDescription"
+            name="job_description"
+            class="text-input"
+            placeholder="Paste the complete job description here — include responsibilities, requirements, and qualifications for most accurate analysis..."
+            rows="14"
+            required
+          ></textarea>
+          <div class="input-meta" id="jdCharCount">0 characters</div>
+        </div>
+
+        <!-- Resume -->
+        <div class="input-panel">
+          <div class="panel-header">
+            <span class="panel-number">02</span>
+            <div>
+              <div class="panel-title">Your Resume</div>
+              <div class="panel-subtitle">Upload a file or paste text</div>
+            </div>
+          </div>
+
+          <!-- Upload area -->
+          <div class="upload-zone" id="uploadZone">
+            <div class="upload-icon">↑</div>
+            <div class="upload-label">Drop your resume here</div>
+            <div class="upload-sub">PDF, DOCX, or TXT — max 5MB</div>
+            <input type="file" id="resumeFile" name="resume_file" accept=".pdf,.txt,.doc,.docx" class="file-input-hidden" />
+            <button type="button" class="btn-upload-select" onclick="document.getElementById('resumeFile').click()">
+              Browse Files
+            </button>
+            <div class="file-selected-indicator" id="fileSelectedIndicator"></div>
+          </div>
+
+          <div class="divider-or">
+            <span>or paste resume text below</span>
+          </div>
+
+          <textarea
+            id="resumeText"
+            name="resume_text"
+            class="text-input"
+            placeholder="Paste your resume content here as plain text..."
+            rows="7"
+          ></textarea>
+          <div class="input-meta" id="resumeCharCount">0 characters</div>
+        </div>
+      </div>
+
+      <!-- Action row -->
+      <div class="action-row">
+        <button type="submit" class="btn-analyze" id="analyzeBtn">
+          <span class="btn-label">Run The Resume Analysis</span>
+          <span class="btn-icon">→</span>
+        </button>
+        <div class="action-note">Analysis typically takes 20–40 seconds ... Less than you think ...</div>
+      </div>
+    </form>
+
+    <!-- Loading state -->
+    <div class="loading-panel" id="loadingPanel" style="display:none;">
+      <div class="loading-inner">
+        <div class="loading-spinner"></div>
+        <div class="loading-title">Analyzing your profile...</div>
+        <div class="loading-steps" id="loadingSteps">
+          <div class="loading-step active" data-step="0">Parsing job description</div>
+          <div class="loading-step" data-step="1">Extracting resume intelligence</div>
+          <div class="loading-step" data-step="2">Running semantic analysis</div>
+          <div class="loading-step" data-step="3">Scoring alignment</div>
+          <div class="loading-step" data-step="4">Generating recommendations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div class="error-panel" id="errorPanel" style="display:none;">
+      <div class="error-icon">⚠</div>
+      <div class="error-title">Analysis Failed</div>
+      <div class="error-message" id="errorMessage"></div>
+      <button class="btn-retry" onclick="resetForm()">Try Again</button>
+    </div>
+
+    <!-- Results Panel -->
+    <div class="results-section" id="resultsSection" style="display:none;">
+
+      <!-- Score Hero -->
+      <div class="score-hero">
+        <div class="score-left">
+          <div class="score-label-top">Role Alignment Score</div>
+          <div class="score-display">
+            <span class="score-number" id="scoreNumber">0</span>
+            <span class="score-max">/100</span>
+          </div>
+          <div class="score-badge" id="scoreBadge">—</div>
+          <div class="score-rationale" id="scoreRationale"></div>
+        </div>
+        <div class="score-right">
+          <div class="dimensions-grid" id="dimensionsGrid"></div>
+          <div class="hiring-rec" id="hiringRec"></div>
+        </div>
+      </div>
+
+      <!-- Overall Assessment -->
+      <div class="assessment-banner" id="assessmentBanner"></div>
+
+      <!-- Top Actions -->
+      <div class="top-actions-section" id="topActionsSection"></div>
+
+      <!-- Diagnostic Grid -->
+      <div class="diagnostics-grid">
+
+        <!-- Strengths -->
+        <div class="diag-card diag-strengths">
+          <div class="diag-header">
+            <span class="diag-icon">✓</span>
+            <span class="diag-title">Strengths</span>
+            <span class="diag-count" id="strengthsCount">0</span>
+          </div>
+          <div class="diag-items" id="strengthsList"></div>
+        </div>
+
+        <!-- Weaknesses -->
+        <div class="diag-card diag-weaknesses">
+          <div class="diag-header">
+            <span class="diag-icon">✗</span>
+            <span class="diag-title">Weaknesses</span>
+            <span class="diag-count" id="weaknessesCount">0</span>
+          </div>
+          <div class="diag-items" id="weaknessesList"></div>
+        </div>
+
+      </div>
+
+      <!-- Missing Keywords -->
+      <div class="section-card" id="keywordsSection">
+        <div class="section-header">
+          <span class="section-icon">⌖</span>
+          <h2 class="section-title">Missing Keywords</h2>
+          <span class="section-sub">ATS & recruiter section gaps</span>
+        </div>
+        <div class="keywords-grid" id="keywordsList"></div>
+      </div>
+
+      <!-- Skill Gaps -->
+      <div class="section-card" id="skillGapsSection">
+        <div class="section-header">
+          <span class="section-icon">△</span>
+          <h2 class="section-title">Skill Gap Analysis</h2>
+          <span class="section-sub">Capability related to role requirements</span>
+        </div>
+        <div class="skill-gaps-list" id="skillGapsList"></div>
+      </div>
+
+      <!-- Section Improvements -->
+      <div class="section-card" id="sectionImprovementsCard">
+        <div class="section-header">
+          <span class="section-icon">◎</span>
+          <h2 class="section-title">Section-Level Improvements</h2>
+          <span class="section-sub">Structure andcontent enhancements by resume section</span>
+        </div>
+        <div class="improvements-list" id="sectionImprovementsList"></div>
+      </div>
+
+      <!-- Bullet Optimizations -->
+      <div class="section-card" id="bulletOptsCard">
+        <div class="section-header">
+          <span class="section-icon">↻</span>
+          <h2 class="section-title">Bullet Optimization </h2>
+          <span class="section-sub">How to rewrite experience descriptions for impact</span>
+        </div>
+        <div class="bullet-opts-list" id="bulletOptsList"></div>
+      </div>
+
+      <!-- Reset -->
+      <div class="reset-row">
+        <button class="btn-reset" onclick="resetForm()">← Analyze Another Resume</button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div>ResumeAlign Lens &mdash; It is more intelligent than YOU </div>
+    <div class="footer-note">Made by Amrutha  &middot; Not a regular one, It's the one regular</div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
