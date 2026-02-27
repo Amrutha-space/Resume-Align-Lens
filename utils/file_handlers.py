@@ -10,17 +10,15 @@ from werkzeug.datastructures import FileStorage
 ALLOWED_EXTENSIONS = {"pdf", "txt", "doc", "docx"}
 MAX_TEXT_LENGTH = 15000  # ~3000 words, sufficient for any resume
 
+# Note: For PDF and DOCX processing, ensure the required libraries (pdfplumber, python-docx) are installed in your environment.
 
 class FileHandler:
     """Handles uploaded resume file validation and text extraction."""
 
     def extract_text(self, file: FileStorage) -> dict:
-        """
-        Extract text content from an uploaded file.
-
+        """ Extract text content from an uploaded file.
         Args:
             file: Werkzeug FileStorage object.
-
         Returns:
             dict with 'text' key on success, 'error' key on failure.
         """
