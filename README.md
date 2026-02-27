@@ -1,12 +1,12 @@
-# CVAlign Lens
+# Resume Align Lens
 
 **Resume Intelligence Engine** — An AI-powered diagnostic tool that analyzes your resume against a job description and produces precise, explainable feedback. Not a resume builder. An analytical engine.
 
 ---
 
-## What It Does
+## What It Does and why 
 
-CVAlign Lens performs a multi-stage analysis pipeline:
+ResumeAlign Lens performs a multi-stage analysis pipeline:
 
 1. **Job Description Parsing** — Extracts role requirements, must-have skills, ATS keywords, and seniority signals
 2. **Resume Intelligence Extraction** — Identifies skills, experience, achievements, and structural gaps
@@ -80,16 +80,16 @@ pip install -r requirements.txt
 
 ```bash
 # macOS / Linux
-export ANTHROPIC_API_KEY="sk-ant-your-key-here"
+export GROQ_API_KEY="sk-ant-your-key-here"
 
 # Windows (Command Prompt)
-set ANTHROPIC_API_KEY=sk-ant-your-key-here
+set GROQ_API_KEY=sk-ant-your-key-here
 
 # Windows (PowerShell)
-$env:ANTHROPIC_API_KEY="sk-ant-your-key-here"
+$env:GROQ_API_KEY="sk-ant-your-key-here"
 ```
 
-### 5. Run the application
+### 5. Run the application (use python3 or python)
 
 ```bash
 python app.py
