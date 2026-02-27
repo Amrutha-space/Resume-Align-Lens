@@ -1,5 +1,5 @@
 /**
- * CVAlign Lens — Application Logic
+ * Resume Align Lens — Application Logic
  * Handles form submission, state transitions, and results rendering.
  */
 
@@ -32,7 +32,7 @@ resumeTextInput.addEventListener('input', () => {
   resumeCharCount.textContent = `${resumeTextInput.value.length.toLocaleString()} characters`;
 });
 
-// ---- File Upload Handling ----
+// ---- File Upload Handling with region  ----
 uploadZone.addEventListener('dragover', (e) => {
   e.preventDefault();
   uploadZone.classList.add('drag-over');
@@ -253,7 +253,7 @@ function renderScore(score) {
     });
   }, 100);
 
-  // Hiring rec
+  // Hiring record
   const hiringEl = document.getElementById('hiringRec');
   hiringEl.innerHTML = `
     <strong>Hiring Recommendation</strong>
@@ -261,6 +261,8 @@ function renderScore(score) {
     <span style="color:var(--text-muted)"> · Confidence: ${esc(score.confidence_in_assessment)}</span>
   `;
 }
+
+// Overall assessment section
 
 function renderAssessment(text) {
   const el = document.getElementById('assessmentBanner');
