@@ -42,7 +42,7 @@ def analyze():
         resume_text = request.form.get("resume_text", "").strip()
         resume_file = request.files.get("resume_file")
 
-        # Validate job description
+        # job description
         if not job_description_text:
             return jsonify({"error": "Job description is required."}), 400
 
@@ -56,14 +56,14 @@ def analyze():
         if not resume_text:
             return jsonify({"error": "Resume content is required (paste text or upload a file)."}), 400
 
-        # Parse inputs
+        # Parse the inputs
         jd_data = jd_parser.parse(job_description_text)
         resume_data = resume_parser.parse(resume_text)
 
-        # Run analysis
+        # Run the analysis
         analysis = analyzer.analyze(jd_data, resume_data)
 
-        # Score
+        # Score the analysis
         score_data = scorer.score(analysis)
 
         return jsonify({
