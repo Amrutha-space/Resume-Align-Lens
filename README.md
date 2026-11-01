@@ -33,7 +33,7 @@ cvalign-lens/
 ├── prompts/
 │   └── prompt_templates.py     # All LLM prompts (centralized, never inline)
 ├── utils/
-│   ├── llm_client.py           # Anthropic API wrapper with JSON extraction
+│   ├── llm_client.py           # Groq API wrapper with JSON extraction
 │   ├── file_handlers.py        # Resume file upload & text extraction (PDF/DOCX/TXT)
 │   └── text_processing.py      # Text cleaning & normalization utilities
 ├── templates/
@@ -50,7 +50,7 @@ cvalign-lens/
 ## Prerequisites
 
 - Python 3.10+
-- An [Anthropic API key](https://console.anthropic.com/)
+- A [Groq API key](https://console.groq.com/keys)
 
 ---
 
@@ -80,17 +80,17 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Set your API key (you can use any API -KEY)
+### 4. Set your Groq API key
 
 ```bash
 # macOS / Linux
-export GROQ_API_KEY="sk-ant-your-key-here"
+export GROQ_API_KEY="gsk_your_groq_api_key_here"
 
 # Windows (Command Prompt)
-set GROQ_API_KEY=sk-ant-your-key-here
+set GROQ_API_KEY=gsk_your_groq_api_key_here
 
 # Windows (PowerShell)
-$env:GROQ_API_KEY="sk-ant-your-key-here"
+$env:GROQ_API_KEY="gsk_your_groq_api_key_here"
 ```
 
 ### 5. Run the application (use python3 or python)
@@ -108,7 +108,7 @@ The app will be available at: **http://localhost:5000**
 | Environment Variable | Default | Description |
 |---|---|---|
 | `GROQ_API_KEY` | Required | Your Groq API key |
-| `GROQ_MODEL` | Model to use for analysis |
+| `GROQ_MODEL` | `openai/gpt-oss-120b` | Groq model to use for analysis |
 | `PORT` | `5000` | Port the Flask server listens on |
 | `FLASK_DEBUG` | `false` | Enable Flask debug mode |
 
