@@ -31,11 +31,14 @@ class LLMClient:
             ],
             temperature=0.3,
             max_tokens=8192,
-            reasoning_efforts="low"
-            response_format={"type": "json_object"},    # safer limit than 4096
+            reasoning_effort="low",
+            response_format={"type": "json_object"},
         )
 
-        raw_text = response.choices[0].message.content.strip()
+        choice = response.choices[0]
+        print("finish_reason:", choice.finish_reason, flush=True)
+
+        raw_text = (choice.message.content or "").strip()
         return self._extract_json(raw_text)
 
     def _extract_json(self, text: str) -> dict:
