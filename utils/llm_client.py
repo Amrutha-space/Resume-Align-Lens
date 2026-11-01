@@ -20,8 +20,7 @@ class LLMClient:
 
         self.client = Groq(api_key=api_key)
 
-        # ✅ DEFINE MODEL HERE
-        self.model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+        self.model = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
     def call(self, system_prompt: str, user_prompt: str) -> dict:
         response = self.client.chat.completions.create(

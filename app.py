@@ -14,7 +14,6 @@ from services.scorer import Scorer
 from utils.file_handlers import FileHandler
 
 load_dotenv()
-api_key = os.getenv("ANTHROPIC_API_KEY")
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024  # 5 MB limit
 
