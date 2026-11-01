@@ -30,7 +30,9 @@ class LLMClient:
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0.3,
-            max_tokens=2048,  # safer limit than 4096
+            max_tokens=8192,
+            reasoning_efforts="low"
+            response_format={"type": "json_object"},    # safer limit than 4096
         )
 
         raw_text = response.choices[0].message.content.strip()
